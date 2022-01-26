@@ -59,4 +59,30 @@ node_network_speed_bytes{device="enp37s0"} 1.25e+08
 node_network_transmit_bytes_total{device="enp37s0"} 487430  
 
 3. 
+![img_1.png](img_1.png)  
+4. Да:  
+- [    0.000000] DMI: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006  
+- [    0.003357] CPU MTRRs all blank - virtualized system.  
+5. cat /proc/sys/fs/nr_open  
+Обозначает максимальное количество дескрипторов файлов, которые может выделить процесс. Значение по умолчанию: 1048576  
+ulimit -n  
+1024 (аксимальное количество открытых файловых дескрипторов)  
+6. root@LSergeyO:~# unshare -f --pid --mount-proc sleep 1h  
+root@LSergeyO:~# ps -e | grep sleep  
+   3527 pts/0    00:00:00 sleep  
+root@LSergeyO:~# nsenter --target 3527 --pid --mount --no-fork   
+root@LSergeyO:/# ps aux  
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND  
+root           1  0.0  0.0  16716   588 pts/0    S+   23:01   0:00 sleep 1h  
+root          11  0.0  0.0  20164  3488 pts/1    R+   23:02   0:00 ps aux  
+7. 136.198953] cgroup: fork rejected by pid controller in /user.slice/user-1000.slice/session-3.scope  
+Создаются дочернии процессы. Можно ограничить число процессов: ulimit -u 10  
+ 
+
+
+
+
+
+
+
 
